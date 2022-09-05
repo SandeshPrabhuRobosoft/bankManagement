@@ -24,12 +24,7 @@ let allAccountNumbers=[]
 // let person1=new Person("Sandesh",1000,"sandesh@xyz.com",1234567890) //Creating a person
 // person1.details()
 
-class CaSa extends Person {
-    constructor(personName,initialAmount,email,phoneNumber){
-        super(personName,initialAmount,email,phoneNumber);
-    }
-}
-class CurrentAccount extends CaSa{
+class CurrentAccountCaSa extends Person{
     constructor(personName,initialAmount,email,phoneNumber){
         super(personName,initialAmount,email,phoneNumber)
         this.interest=3;
@@ -66,14 +61,16 @@ class CurrentAccount extends CaSa{
         console.log(this.amount)
     }
 }
-class SavingsAccount extends CaSa{
+class SavingsAccountCaSa extends Person{
     constructor(personName,initialAmount,email,phoneNumber){
         super(personName,initialAmount,email,phoneNumber)
         interest=4
     }
     DepositSavingsAccount(money){                //Deposit money function
         this.amount=this.amount+money;
-        console.log(`Current amount in ${this.personName}'s savings account: ${this.amount}`)
+        let msg=`Credited Rs.${money}/-     Balance: Rs.${this.amount}/-`
+        this.statements.push[msg]
+        console.log(msg)
     }
     WithdrawalSavingsAccount(money){   //Deposit money function
         if(this.amount<=money+100){         // to ensure minimum balance of Rs.100/-
@@ -81,18 +78,12 @@ class SavingsAccount extends CaSa{
             console.log(`Current amount in ${this.personName}'s savings account: ${this.amount}`)
         }
         else{
-            console.log("You have not enough amount in the account")
+            console.log("You do not have minimum amount in the account")
             console.log(`Current amount in ${this.personName}'s savings account: ${this.amount}`)
         }
     }
-
 }
-class DepositAccount extends Person {
-    constructor(personName,initialAmount,email,phoneNumber){
-        super(personName,initialAmount,email,phoneNumber)
-    }
-}
-class FixedAccount extends DepositAccount{
+class FixedDepositAccount extends Person{
     constructor(personName,initialAmount,email,phoneNumber){
         super(personName,initialAmount,email,phoneNumber)
         interest=8
@@ -102,7 +93,7 @@ class FixedAccount extends DepositAccount{
         console.log(`Current amount in ${this.personName}'s Fixed account: ${this.amount}`)
     }
 }
-class RecurringAccount extends DepositAccount{
+class RecurringDepositAccount extends Person{
     constructor(personName,initialAmount,email,phoneNumber){
         super(personName,initialAmount,email,phoneNumber)
         interest=7
@@ -114,15 +105,15 @@ class RecurringAccount extends DepositAccount{
 }
 
 class LoanAccount extends Person {
-    constructor(personName,initialAmount,email,phoneNumber,type){
+    constructor(personName,initialAmount,email,phoneNumber,loanType){
         super(personName,initialAmount,email,phoneNumber)
-        this.loanType=type
-        this.interest=0.10 
+        this.loanType=loanType
+        this.interest=10 
     }
     depositLoan(money){
         if(this.type=="House"){
-            this.amount=this.amount+money;
-            console.log(`Current amount in ${this.personName}'s Recurring account: ${this.amount}`)
+            this.amount=this.amount-money;
+            console.log(`Deposited amount: Rs.${this.amount}/-      Remaining amount to be paid: Rs.${this.amount}/-`)
         }
     }
 }
@@ -132,7 +123,7 @@ class LoanAccount extends Person {
 //     }
 //     return person.amount;
 // }
-let sandeshCaSa=new CurrentAccount("Sandesh",1000,"sandesh@xyz.com",1234567890)  //Object creation
+let sandeshCaSa=new CurrentAccountCaSa("Sandesh",1000,"sandesh@xyz.com",1234567890)  //Object creation
 sandeshCaSa.WithdrawalCurrentAccount(20)            //deposit cash
 console.log(sandeshCaSa.balance())
 
