@@ -6,14 +6,14 @@ class Person{
         this.phoneNumber=phoneNumber;
         this.accountType
         this.dateOfCreation=new Date()
+        this.dateOfCreation.setYear(2020)
         this.accountNumber=Math.floor(Math.random() * (9999999999999 - 1000000000000 + 1)) + 1000000000000;             //creating 13 digit account number
         while(allAccountNumbers.indexOf(this.accountNumber)!= -1){                                                      //Checking uniqueness of account number
             this.accountNumber=Math.floor(Math.random() * (9999999999999 - 1000000000000 + 1)) + 1000000000000;
         }
         allAccountNumbers.push(this.accountNumber);
-        
+        this.statements=[]
     }
-    
     details(){
         console.log(this)           //Obtain data of the holder
     }
@@ -26,47 +26,138 @@ let allAccountNumbers=[]
 
 class CaSa extends Person {
     constructor(personName,initialAmount,email,phoneNumber){
-        super(personName,initialAmount,email,phoneNumber)
+        super(personName,initialAmount,email,phoneNumber);
     }
 }
-class DepositCaSa extends CaSa{
-    constructor(personName,initialAmount,email,phoneNumber){
-        this.interest=0.03;
-        super(personName,initialAmount,email,phoneNumber)
-    }
-    DepositMoneyCaSa(money){                //Deposite money function
-        this.amount=this.amount+money;
-        console.log(`Current amount in ${this.personName}'s account: ${this.amount}`)
-    }
-}
-class WithdrawalCaSa extends CaSa{
+class CurrentAccount extends CaSa{
     constructor(personName,initialAmount,email,phoneNumber){
         super(personName,initialAmount,email,phoneNumber)
-        this.interest=0.04;
+        this.interest=3;
     }
-    WithdrawalMoneyCaSa(money){   //Deposite money function
+    DepositCurrentAccount(money){                //Deposit money function
         this.amount=this.amount+money;
-        console.log(`Current amount in ${this.personName}'s account: ${this.amount}`)
+        let msg=`Credited Rs.${money}/-     Balance: Rs.${this.amount}/-`
+        this.statements.push[msg]
+        console.log(msg)
+    }
+    WithdrawalCurrentAccount(money){   //Deposit money function
+        if(this.amount>=money){
+            this.amount=this.amount-money;
+            let msg=`Debited Rs.${money}/-     Balance: Rs.${this.amount}/-`
+            this.statements.push[msg]
+            console.log(msg)
+        }
+        else{
+            console.log("You have not enough amount in the account")
+            console.log(`Current amount in ${this.personName}'s current account: ${this.amount}`)
+        }
     }
     balance(){
         let creationDate=this.dateOfCreation
         let currentDate=new Date()
         creationDate=creationDate.getFullYear()
+        console.log(creationDate)
         currentDate=currentDate.getFullYear()
+        console.log(currentDate)
         let difference=currentDate-creationDate
-        let interest=0
         if(difference>0){
-            interest=calculateInterest("Withdrawal",difference,this)
+            this.amount=this.amount+(this.amount*this.interest/365)
+        }
+        console.log(this.amount)
+    }
+}
+class SavingsAccount extends CaSa{
+    constructor(personName,initialAmount,email,phoneNumber){
+        super(personName,initialAmount,email,phoneNumber)
+        interest=4
+    }
+    DepositSavingsAccount(money){                //Deposit money function
+        this.amount=this.amount+money;
+        console.log(`Current amount in ${this.personName}'s savings account: ${this.amount}`)
+    }
+    WithdrawalSavingsAccount(money){   //Deposit money function
+        if(this.amount<=money+100){         // to ensure minimum balance of Rs.100/-
+            this.amount=this.amount-money;
+            console.log(`Current amount in ${this.personName}'s savings account: ${this.amount}`)
+        }
+        else{
+            console.log("You have not enough amount in the account")
+            console.log(`Current amount in ${this.personName}'s savings account: ${this.amount}`)
+        }
+    }
+
+}
+class DepositAccount extends Person {
+    constructor(personName,initialAmount,email,phoneNumber){
+        super(personName,initialAmount,email,phoneNumber)
+    }
+}
+class FixedAccount extends DepositAccount{
+    constructor(personName,initialAmount,email,phoneNumber){
+        super(personName,initialAmount,email,phoneNumber)
+        interest=8
+    }
+    DepositFixedAccount(money){                //Deposit money function
+        this.amount=this.amount+money;
+        console.log(`Current amount in ${this.personName}'s Fixed account: ${this.amount}`)
+    }
+}
+class RecurringAccount extends DepositAccount{
+    constructor(personName,initialAmount,email,phoneNumber){
+        super(personName,initialAmount,email,phoneNumber)
+        interest=7
+    }
+    DepositRecurringAccount(money){                //Deposit money function
+        this.amount=this.amount+money;
+        console.log(`Current amount in ${this.personName}'s Recurring account: ${this.amount}`)
+    }
+}
+
+class LoanAccount extends Person {
+    constructor(personName,initialAmount,email,phoneNumber,type){
+        super(personName,initialAmount,email,phoneNumber)
+        this.loanType=type
+        this.interest=0.10 
+    }
+    depositLoan(money){
+        if(this.type=="House"){
+            this.amount=this.amount+money;
+            console.log(`Current amount in ${this.personName}'s Recurring account: ${this.amount}`)
         }
     }
 }
-calculateInterest(accountType,difference,person){
-    if(accountType!="deposit"){
-        this.amount=this.amount*(this.amount*this.interest/365)
-    }
-}
-let sandeshCaSa=new WithdrawalCaSa("Sandesh",1000,"sandesh@xyz.com",1234567890)  //Object creation
-sandeshCaSa.WithdrawalMoneyCaSa(20)            //deposit cash
-sandeshCaSa.details()       //print Data of the person
-console.log(sandeshCaSa.interest)
-//loan 1month
+// function calculateInterest(accountType,difference,person){
+//     if(accountType!="deposit"){
+//         person.amount=person.amount+(person.amount*person.interest/365)
+//     }
+//     return person.amount;
+// }
+let sandeshCaSa=new CurrentAccount("Sandesh",1000,"sandesh@xyz.com",1234567890)  //Object creation
+sandeshCaSa.WithdrawalCurrentAccount(20)            //deposit cash
+console.log(sandeshCaSa.balance())
+
+
+
+
+
+
+
+
+
+
+
+
+
+// balance(){
+//     let creationDate=this.dateOfCreation
+//     let currentDate=new Date()
+//     creationDate=creationDate.getFullYear()
+//     console.log(creationDate)
+//     currentDate=currentDate.getFullYear()
+//     console.log(currentDate)
+//     let difference=currentDate-creationDate
+//     if(difference>0){
+//         this.amount=this.amount+(this.amount*this.interest/365)
+//     }
+//     console.log(this.amount)
+// }
